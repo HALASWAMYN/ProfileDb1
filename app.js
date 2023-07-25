@@ -1,6 +1,10 @@
 const express = require('express')
 const cors = require('cors')
 const app = express()
+const bodyParser = require('body-parser');
+require('dotenv').config()
+
+const PORT = process.env.PORT || 5000
 
 
 
@@ -9,17 +13,15 @@ const User = require('./models/users')
 const Post = require('./models/posts')
 
 
-
-//database
-const mongoose = require('mongoose')
-mongoose.set('strictQuery', false)
-
 //middlewears
+app.use(bodyParser.json());
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cors())
 
-
+//database
+const mongoose = require('mongoose')
+mongoose.set('strictQuery', false)
 let dbUrl = 'mongodb+srv://halaswamyn2000:0IqxSchH32DPl1kJ@cluster0.stqarem.mongodb.net/practice'
 mongoose.connect(dbUrl).then(() => {
     console.log('dataBase connected')
@@ -152,6 +154,6 @@ app.put('/list/:id', async (req, res) => {
 });
 
 
-app.listen(5000, () => {
+app.listen(PORT, () => {
     console.log('listenig localhost 5000')
 })
