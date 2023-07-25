@@ -22,11 +22,17 @@ app.use(cors())
 //database
 const mongoose = require('mongoose')
 mongoose.set('strictQuery', false)
-let dbUrl = 'mongodb+srv://halaswamyn2000:0IqxSchH32DPl1kJ@cluster0.stqarem.mongodb.net/practice'
-mongoose.connect(dbUrl).then(() => {
-    console.log('dataBase connected')
-})
+const connectDB = async () => {
+  try {
 
+    const uri = "mongodb+srv://halaswamyn2000:0IqxSchH32DPl1kJ@cluster0.stqarem.mongodb.net/practice"
+    await mongoose.connect(uri)
+    console.log(`mangoDB connected:`);
+  } catch (error) {
+    console.log(error);
+    process.exit(1)
+  }
+}
 
 app.post('/signup', async (req, res) => {
 
@@ -154,6 +160,8 @@ app.put('/list/:id', async (req, res) => {
 });
 
 
-app.listen(PORT, () => {
-    console.log('listenig localhost 5000')
-})
+connectDB().then(() => {
+    app.listen(PORT, () => {
+      console.log(`listening to server ${PORT}`)
+    })
+  })
